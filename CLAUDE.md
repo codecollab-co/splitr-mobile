@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Splitr Mobile is a mobile application project with a standard cross-platform mobile app architecture. The project appears to be in early setup/template phase with directory structure in place but implementation pending.
+Splitr Mobile is a fully implemented React Native TypeScript application for expense splitting and group financial management. The project uses custom API-based authentication, React Navigation, TanStack Query for data fetching, and React Native Paper for UI components.
 
 ## Architecture
 
@@ -25,38 +25,65 @@ The project follows a typical mobile app structure:
 
 ## Development Commands
 
-**Note**: Project configuration files (package.json, pubspec.yaml, etc.) are not yet present. Once the mobile framework is chosen and configured, update this section with the appropriate commands.
+**React Native TypeScript Project**
 
-Common mobile development commands to look for:
-- Framework installation and dependency management
-- Development server/hot reload
-- Building for different platforms (iOS/Android)
-- Testing commands
-- Linting and code formatting
-- Platform-specific builds and deployments
+Development commands available:
+
+```bash
+# Development
+npm run start          # Start Metro bundler
+npm run dev           # Start with cache reset
+npm run android       # Run on Android
+npm run ios           # Run on iOS
+
+# Code Quality
+npm run lint          # Run ESLint
+npm run typecheck     # Run TypeScript checks
+npm test             # Run Jest tests
+
+# Build
+npm run build:android # Build Android release
+npm run build:ios     # Build iOS release
+npm run pod-install   # Install iOS CocoaPods
+npm run clean         # Clean React Native cache
+```
 
 ## Mobile Platform
 
-The platform/framework (React Native, Flutter, Ionic, etc.) has not yet been determined. Check for:
-- `package.json` (React Native/JavaScript)
-- `pubspec.yaml` (Flutter/Dart)
-- `ionic.config.json` (Ionic)
-- Native iOS/Android project files
+**React Native 0.76.1 with TypeScript**
+
+Key technologies:
+- React Native 0.76.1
+- TypeScript 5.0.4
+- React Navigation 6.x for navigation
+- TanStack Query for data fetching
+- React Native Paper for UI components
+- Custom API-based authentication (not Clerk)
+- Axios for HTTP requests
+- Socket.IO for real-time features
 
 ## State Management
 
-The `store/` directory suggests centralized state management will be implemented. Common patterns for mobile apps include:
-- Redux/Redux Toolkit (React Native)
-- Provider/Riverpod (Flutter)
-- MobX, Zustand, or Context API
+**Current Implementation:**
+- **Authentication State**: React Context in `AuthProvider.tsx`
+- **Server State**: TanStack Query for API data caching
+- **Local State**: React hooks for component state
+- **Real-time State**: Socket.IO for live updates
+
+The project currently uses React Context for authentication and TanStack Query for server state management, which is sufficient for most use cases.
 
 ## Navigation
 
-Mobile navigation will be handled through the `navigation/` directory and components. Look for:
+**React Navigation Implementation:**
+- `AppNavigator.tsx`: Main navigation container with auth switching
+- `AuthNavigator.tsx`: Authentication flow navigation
+- `MainTabNavigator.tsx`: Main app tab navigation
 - Stack navigation for screen transitions
-- Tab navigation for main app sections
-- Modal/overlay presentations
-- Deep linking configuration
+- Conditional rendering based on authentication state
+
+Navigation uses TypeScript path aliases:
+- `@navigation/*` for navigation components
+- `@screens/*` for screen components
 
 ## Code Organization
 
@@ -65,9 +92,37 @@ Mobile navigation will be handled through the `navigation/` directory and compon
 - Utilities kept in dedicated utils directory
 - Platform-specific code isolated to android/ios directories
 
+## Authentication System
+
+**Custom API Authentication** (not Clerk):
+- `AuthProvider.tsx`: React Context for auth state management
+- `ApiService.ts`: HTTP client with token management
+- `UserService.ts`: User-related API calls
+- Token stored in AsyncStorage with automatic refresh
+
+## Key Services
+
+- `ApiService.ts`: Main HTTP client with interceptors and error handling
+- `UserService.ts`: User management and profile operations
+- `ConfigService.ts`: Environment and database configuration
+- `ExpenseService.ts`: Expense management operations
+- `GroupService.ts`: Group management operations
+
+## TypeScript Configuration
+
+Path aliases configured in `tsconfig.json`:
+- `@/*` → `src/*`
+- `@components/*` → `src/components/*`
+- `@screens/*` → `src/screens/*`
+- `@services/*` → `src/services/*`
+- `@navigation/*` → `src/navigation/*`
+- `@types/*` → `src/types/*`
+- `@constants/*` → `src/constants/*`
+
 When adding new features:
 1. Create reusable components in appropriate `components/` subdirectories
 2. Add screen-level components to `screens/`
 3. Place API calls and business logic in `services/`
 4. Add navigation routes in `navigation/`
 5. Create utility functions in `utils/`
+6. Use TypeScript path aliases for cleaner imports
